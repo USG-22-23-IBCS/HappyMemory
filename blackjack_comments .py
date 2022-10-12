@@ -148,7 +148,7 @@ def main():
         
             
         if calcHandValue(dealerHand) > calcHandValue(userHand):
-        #this means that if the dealer has a bigger value of cards than the user than dealer wins, thus we print 'dealer wins' afterwards 
+        #this means that if the dealer has a bigger value of cards than the user then dealer wins, thus we print 'dealer wins' afterwards 
             print("Dealer wins")
         else:
             print("User wins")
