@@ -5,8 +5,8 @@ def return7(l):
 
         if l[i] == 7 and l[i+1] == 7: 
 
-            return ("True")
-    return ("False")
+            return True
+    return False
 
 
 def totalexcept5(l2):
