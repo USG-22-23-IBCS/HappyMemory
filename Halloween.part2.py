@@ -148,16 +148,16 @@ def randPath(m, num):
              
                 
 def main():
-    
+
+
     m = [[], [], [], [], []]
     for l in m:
         for i in range(5):
-            l.append(House().getRating())
-    for l in m:
-        print("\n")
-        for house in l:
-            print(house, end = "  ")
-    print("\n")
+            h = House()
+            l.append(h.getRating())
+
+    for i in range(5):
+        print(m[0][i], m[1][i], m[2][i], m[3][i], m[4][i]) 
 
 
 
