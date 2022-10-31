@@ -12,6 +12,98 @@ class House:
         return self.rating
 
 
+def greedyPath(m, num):
+    bestHouses = []
+    houses = []
+    coordinates = []
+
+    for i in range(5):
+        for j in range(5):
+            houses.append(m[i][j])
+            coordinates.append([i,j])
+    for i in range(25):
+        maxHouse = houses[0]
+        for h in houses:
+            if h > maxHouse:
+                maxHouse = h
+
+        position = houses.index(maxHouse)
+        bestHouses.append(coordinates.pop(position))
+        houses.pop(position)
+    
+    #sort the houses in terms of best to worst
+    
+
+    #try to add coordinates to the path
+    #if the path were to get stuck or be 'unfinished' in anyway, try again
+    #using a new starting position
+    #return once a fair path is generated
+    #if no fair path found, return list of zeros as coordinates
+    for i in range(25):
+        p = []
+
+
+
+        #keep track of the value of the path
+        #pick the next best house to start with
+        
+        start = bestHouses[i]
+        x = start[0]
+        y = start[1]
+        pVal = m[x][y]
+        p.append(start)
+        #add neighbors to the path after comparing to see which neighbor is best
+        for i in range(num - 1):
+            #check to see if we are stuck. If we get stuck, break
+
+            neighbors = [[x, y-1], [x-1, y], [x+1, y], [x, y+1]]
+            bad = []
+            
+
+ 
+            for n in neighbors:
+                if (n[0] > 4) or (n[0] < 0):
+                    bad.append(n)
+                elif (n[1] > 4) or (n[1] < 0):
+                    bad.append(n)
+                elif n in p:
+                    bad.append(n)
+
+            for b in bad:
+                neighbors.remove(b)
+
+            if len(neighbors) == 0:
+
+                break
+            
+
+            
+            #check all possible neighbors. Choose the best neighbor
+            #add it to the path and add to the value
+            bestN = neighbors[0]
+            broken = False
+            for b in bestHouses:
+                if broken:
+                    break
+                for n in neighbors:
+                    if n == b:
+                        bestN = n
+                        broken = True
+                        break
+
+            p.append(bestN)
+            x = bestN[0]
+            y = bestN[1]
+            pVal = pVal + m[x][y]
+
+
+            #if path is complete, return path and path value
+            if len(p) == num:
+
+                return pVal, p
+    
+        return 0, [[0,0]]
+
 def randPath(m, num):
     p = []
     
@@ -25,33 +117,34 @@ def randPath(m, num):
 
         for i in range(num - 1):
             neighbors = [[x, y-1], [x-1, y], [x+1, y], [x, y+1]]
-
-            stuck = True
-            for n in neighbors:
-                if (n[0] < 5) and (n[0] > -1):
-                    if (n[1] < 5) and (n[1] > -1):
-                        if n not in p :
-
-                            stuck = False
-
-            if stuck:
-                break
-
-            while True:
-                
-                neighbor = choice(neighbors)
+            bad = []
             
 
-                if (neighbor[0] < 5) and (neighbor[0] > -1):
-                    if (neighbor[1] < 5) and (neighbor[1] > -1):
-                        if neighbor not in p:
-                            p.append(neighbor)
-                            x = neighbor[0]
-                            y = neighbor[1]
-                            pVal = pVal + m[x][y]
-                            break
+ 
+            for n in neighbors:
+                if (n[0] > 4) or (n[0] < 0):
+                    bad.append(n)
+                elif (n[1] > 4) or (n[1] < 0):
+                    bad.append(n)
+                elif n in p:
+                    bad.append(n)
 
-        return pVal, p
+            for b in bad:
+                neighbors.remove(b)
+
+            if len(neighbors) == 0:
+
+                break
+
+                
+            neighbor = choice(neighbors)
+            p.append(neighbor)
+            x = neighbor[0]
+            y = neighbor[1]
+            pVal = pVal + m[x][y]
+                
+
+    return pVal, p
              
                 
 def main():
@@ -67,9 +160,31 @@ def main():
     print("\n")
 
 
+
     num = int(input("how many houses do you want to visit?"))
-    p, pVal = randPath(m, num)
-    print(p, pVal)
+
+    pVal, p = greedyPath(m,num)
+    
+    
+    
+    '''total = 0
+    for i in range(5):
+        for j in range(5):
+            total = total + m[i][j]'''
+
+
+    '''average = total/25
+    
+    pVal, p = randPath(m, num)
+    
+    while (average > pVal/num):
+        pVal, p = randPath(m, num)'''
+
+ 
+    print(p)
+
+    #print("the average value in the path is:" +str(pVal/num))
+    #print("The average value in the neigborhood is:" + str(average))
 
 if __name__ == "__main__":
     main()
